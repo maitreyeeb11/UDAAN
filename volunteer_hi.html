@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>उड़ान मिशन से जुड़ें</title>
+    <link rel="stylesheet" href="volunteer.css">
+</head>
+<body>
+    <div class="background-container">
+        <img src="udaan1.jpg" alt="उड़ान छवि" class="background-image">
+    </div>
+    <div class="form-container">
+        <h1>उड़ान के साथ ऊंची उड़ान भरें – आज ही स्वयंसेवक बनें!</h1>
+        <p>जरूरतमंदों के लिए एक उज्जवल भविष्य बनाने के हमारे मिशन में शामिल हों।</p>
+        <form action="#" method="post">
+            <label for="fullName">पूरा नाम:</label>
+            <input type="text" id="fullName" name="fullName" required>
+
+            <label for="age">आयु:</label>
+            <input type="number" id="age" name="age" min="18" max="100" required>
+
+            <label for="gender">लिंग:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>चुनें</option>
+                <option value="Male">पुरुष</option>
+                <option value="Female">महिला</option>
+                <option value="Other">अन्य</option>
+                <option value="Choose_not">चुनना नहीं चाहते</option>
+            </select>
+
+            <label for="email">ईमेल:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">फोन नंबर:</label>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+
+            <label for="experience">स्वयंसेवक के रूप में पूर्व अनुभव:</label>
+            <textarea id="experience" name="experience" rows="4" placeholder="अपने पिछले अनुभव का वर्णन करें, यदि कोई हो"></textarea>
+
+            <label for="skills">आपके कौशल (जैसे, संचार, लेखन, ग्राफिक डिज़ाइन, तकनीकी कौशल):</label>
+            <textarea id="skills" name="skills" rows="2" required></textarea>
+
+            <label for="interest">रुचि के क्षेत्र (जैसे, शिक्षण, धन संग्रह, कार्यक्रम प्रबंधन, प्रशासन):</label>
+            <textarea id="interest" name="interest" rows="2" required></textarea>
+            
+            <label for="reason">उड़ान में स्वयंसेवक बनने का कारण:</label>
+            <textarea id="reason" name="reason" rows="4" required></textarea>
+
+            <div class="tacbox">
+                <input class="input" id="checkbox" type="checkbox"/>
+                <label for="checkbox">मैं इन <a href="volunteerguidelines.html">स्वयंसेवक दिशानिर्देशों</a> से सहमत हूँ।</label>
+            </div>
+           
+            <button type="submit">जमा करें</button>
+        </form>
+    </div>
+</body>
+</html>

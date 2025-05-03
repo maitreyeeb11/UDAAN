@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background: url('child.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1, h3 {
+            text-align: center;
+            color: #036137;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            color: #036137;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #1dbf73;
+            border-radius: 4px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #1dbf73;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #036137;
+        }
+    </style>
+    <script>
+        
+        function toggleDetails() {
+            let relationship = document.getElementById("relationship").value;
+            let guardianFields = document.getElementById("guardianFields");
+            let parentFields = document.getElementById("parentFields");
+            let ngoFields = document.getElementById("ngoFields");
+
+            guardianFields.style.display = "none";
+            parentFields.style.display = "none";
+            ngoFields.style.display = "none";
+
+            if (relationship === "guardian") {
+                guardianFields.style.display = "block";
+                document.getElementById("guardianName").required = true;
+                document.getElementById("guardianContact").required = true;
+            } else {
+                document.getElementById("guardianName").required = false;
+                document.getElementById("guardianContact").required = false;
+            }
+
+            if (relationship === "parent") {
+                parentFields.style.display = "block";
+                document.getElementById("parentName").required = true;
+                document.getElementById("parentContact").required = true;
+            } else {
+                document.getElementById("parentName").required = false;
+                document.getElementById("parentContact").required = false;
+            }
+
+            if (relationship === "ngo") {
+                ngoFields.style.display = "block";
+                document.getElementById("ngoName").required = true;
+                document.getElementById("ngoContact").required = true;
+            } else {
+                document.getElementById("ngoName").required = false;
+                document.getElementById("ngoContact").required = false;
+            }
+        }
+        function toggleOtherNeed() {
+            let skillsInterest = document.getElementById("skillsInterest").value;
+            let otherNeedField = document.getElementById("otherNeedField");
+            let otherNeed = document.getElementById("otherNeed");
+
+            if (skillsInterest === "other") {
+                otherNeedField.style.display = "block";
+                otherNeed.required = true; // Make it required when "Other" is selected
+            } else {
+                otherNeedField.style.display = "none";
+                otherNeed.required = false; // Remove required if not needed
+                otherNeed.value = ""; // Clear the field when hidden
+            }
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+        let dateInput = document.getElementById("dateOfBirth");
+
+        
+        dateInput.addEventListener("change", function () {
+            console.log("Selected Date:", this.value); // Logs YYYY-MM-DD
+        });
+    });
+
+
+    document.querySelector("form").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        let formData = new FormData(this);
+        let dataObject = {};
+
+        // Convert FormData to an object and remove empty values
+        formData.forEach((value, key) => {
+            if (value.trim() !== "") { // Remove empty values
+                dataObject[key] = value;
+            }
+        });
+
+        // Send cleaned data to the server
+        fetch("http://localhost:3000/register-child", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dataObject),
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert("Registration Successful!"); // Show success message
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    });
+
+</script>
+</head>
+<body>
+    <div class="form-container">
+        <h1><strong>Udaan Child Enrollment Form</strong></h1>
+        <form action="http://localhost:3000/register-child" method="post">
+            <h3>Personal Information</h3>
+            <div class="form-group">
+                <label for="childName">Child's Full Name:</label>
+                <input type="text" id="childName" name="childName" placeholder="Enter full name" required>
+            </div>
+            <!--<div class="form-group">
+                <label for="dateOfBirth">Date of Birth (DD/MM/YYYY):</label>
+                <input type="text" id="dateOfBirth" name="dateOfBirth" placeholder="DD/MM/YYYY" pattern="\d{2}/\d{2}/\d{4}" required>
+            </div>-->
+            <!-- <div class="form-group">
+                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+            </div>
+             -->
+             <div class="form-group">
+                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <h3>Relationship with Child</h3>
+            <div class="form-group">
+                <label for="relationship">Your Relationship with the Child:</label>
+                <select id="relationship" name="relationship" onchange="toggleDetails()" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="guardian">Guardian</option>
+                    <option value="parent">Parent</option>
+                    <option value="ngo">NGO</option>
+                </select>
+            </div>
+
+            <div id="guardianFields" style="display: none;">
+                <h3>Guardian Details</h3>
+                <div class="form-group">
+                    <label for="guardianName">Guardian's Full Name:</label>
+                    <input type="text" id="guardianName" name="guardianName" placeholder="Enter guardian's name">
+                </div>
+                <div class="form-group">
+                    <label for="guardianContact">Guardian's Contact Number:</label>
+                    <input type="tel" id="guardianContact" name="guardianContact" pattern="[0-9]{10}" placeholder="Enter guardian's contact No">
+                </div>
+                <div class="form-group">
+                    <label for="guardianAddress">Guardian's Address:</label>
+                    <input type="text" id="guardianAddress" name="guardianAddress" placeholder="Enter guardian's address">
+                </div>
+            </div>
+            
+            <div id="parentFields" style="display: none;">
+                <h3>Parent's Details</h3>
+                <div class="form-group">
+                    <label for="parentName">Parent's Full Name:</label>
+                    <input type="text" id="parentName" name="parentName" placeholder="Enter parent's name">
+                </div>
+                <div class="form-group">
+                    <label for="parentContact">Parent's Contact Number:</label>
+                    <input type="tel" id="parentContact" name="parentContact" pattern="[0-9]{10}" placeholder="Enter parent's contact No">
+                </div>
+                <div class="form-group">
+                    <label for="parentAddress">Parent's Address:</label>
+                    <input type="text" id="parentAddress" name="parentAddress" placeholder="Enter parent's address">
+                </div>
+            </div>
+            
+            <div id="ngoFields" style="display: none;">
+                <h3>NGO Representative Details</h3>
+                <div class="form-group">
+                    <label for="ngoName">NGO Name:</label>
+                    <input type="text" id="ngoName" name="ngoName" placeholder="Enter representative's name">
+                </div>
+                <div class="form-group">
+                    <label for="ngoContact">NGO Contact Number:</label>
+                    <input type="tel" id="ngoContact" name="ngoContact" pattern="[0-9]{10}" placeholder="Enter NGO contact No">
+                </div>
+                <div class="form-group">
+                    <label for="ngoAddress">NGO Address:</label>
+                    <input type="text" id="ngoAddress" name="ngoAddress" placeholder="Enter NGO address">
+                </div>
+            </div>
+
+            <h3>Educational Background</h3>
+            <div class="form-group">
+                <label for="currentEducation">Current Education Level:</label>
+                <select id="currentEducation" name="currentEducation" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="secondary">Secondary School</option>
+                    <option value="highSchool">High School</option>
+                    <option value="college">College/University</option>
+                </select>
+            </div>
+
+            <h3>Educational Aspirations</h3>
+            <div class="form-group">
+                <label for="eduAspiration">Educational Goals and Future Plans:</label>
+                <textarea id="eduAspiration" name="eduAspiration" rows="3" placeholder="Describe the child's future educational and career goals..."></textarea>
+            </div>
+
+            <h3>Areas of Interest for Training</h3>
+            <div class="form-group">
+                <label for="skillsInterest">Select Training Interest:</label>
+                <select id="skillsInterest" name="skillsInterest" onchange="toggleOtherNeed()">
+                    <option value="" disabled selected>Select</option>
+                    <option value="vocationalTraining">Vocational Training</option>
+                    <option value="softSkills">Soft Skills</option>
+                    <option value="professionalGrooming">Professional Grooming</option>
+                    <option value="careerGuidance">Career Guidance</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="otherNeedField" style="display: none;">
+                <label for="otherNeed">Please Specify (if Other):</label>
+                <textarea id="otherNeed" name="otherNeed" rows="2" placeholder="Specify other training needs..."></textarea>
+            </div>
+
+            
+            <h3>Additional Support</h3>
+            <div class="form-group">
+                <label for="behavioralChallenges">Behavioral Challenges (If Any):</label>
+                <textarea id="behavioralChallenges" name="behavioralChallenges" rows="3" placeholder="Describe any challenges..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="emo_status">Emotional Status:</label>
+                <select id="emo_status" name="emo_status" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="Stable">Stable</option>
+                    <option value="Requires Help">Requires Help</option>
+                    <option value="Improving">Improving</option>
+                    <option value="Anxious">Anxious</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Submit Registration</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

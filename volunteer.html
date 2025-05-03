@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Udaan Mission</title>
+    <link rel="stylesheet" href="volunteer.css">
+</head>
+<body>
+    <div class="background-container">
+        <img src="udaan1.jpg" alt="Udaan Image" class="background-image">
+    </div>
+    <div class="form-container">
+        <h1>Soar with Udaan – Join as a Volunteer Today!</h1>
+        <p>Join us in our mission to create a brighter future for those in need.</p>
+        <!-- Updated form action to ensure correct communication with server -->
+        <form action="http://localhost:3000/register-volunteer" method="post">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" min="18" max="100" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                <option value="Prefer Not to Answer">Prefer Not to Answer</option>
+            </select>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="e.g. 9001234567" required>
+
+            <label for="experience">Previous Experience as a Volunteer:</label>
+            <textarea id="experience" name="experience" rows="4" placeholder="Describe your previous experiences, if any"></textarea>
+
+            <label for="skills">Skills You Can Offer (e.g., communication, writing, graphic design, technical skills):</label>
+            <textarea id="skills" name="skills" rows="2" required></textarea>
+
+            <label for="interest">Areas of Interest (e.g., teaching, fundraising, event management, administration):</label>
+            <textarea id="interest" name="interest" rows="2" required></textarea>
+            
+            <label for="reason">Reason to Volunteer at Udaan:</label>
+            <textarea id="reason" name="reason" rows="4" required></textarea>
+
+            <label for="availability">Availability (e.g., Weekdays, Weekends, Flexible):</label>
+            <textarea id="availability" name="availability" rows="2" required></textarea>
+
+            <div class="tacbox">
+                <input class="input" id="checkbox" type="checkbox" required />
+                <label for="checkbox"> I agree to these <a href="volunteerguidelines.html" target="_blank">Volunteer Guidelines</a></label>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("volunteerForm");
+    
+            form.addEventListener("submit", async function (event) {
+                event.preventDefault(); // Prevent default form submission
+    
+                const formData = new FormData(this);
+    
+                try {
+                    let response = await fetch(form.action, 
+                     {
+                        method: "POST",
+                        body: new URLSearchParams(new FormData(form)), // Ensure form data is correctly formatted
+                        headers: {
+                           "Content-Type": "application/x-www-form-urlencoded",
+                     },
+                   });
+    
+                    let result = await response.text(); // Expect HTML response
+                    document.body.innerHTML = result; // Replace entire page with the server response
+    
+                } catch (error) {
+                    console.error("Submission failed:", error);
+                    alert("Something went wrong! Please try again.");
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>

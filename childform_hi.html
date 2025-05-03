@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .background-image {
+            width: 107%;
+            height: auto;
+            min-height: 100%;
+            opacity: 0.5;
+            object-fit: cover;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            color:  #036137;
+        }
+        h3 {
+            text-align: center;
+            color: #020f09;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            color: #036137;
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #1dbf73;
+            border-radius: 4px;
+        }
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #1dbf73;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color:  #036137;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-container">
+        <img src="child.jpg" alt="Udaan Image" class="background-image">
+    </div>
+    <div class="form-container">
+        <h1><strong>उड़ान बाल नामांकन फॉर्म</strong></h1>
+        <form action="" method="post">
+            <!-- Personal Information -->
+            <h3>व्यक्तिगत जानकारी</h3>
+            <div class="form-group">
+                <label for="childName">बच्चे का पूरा नाम:</label>
+                <input type="text" id="childName" name="childName" placeholder="पूरा नाम दर्ज करें" required>
+            </div>
+            <div class="form-group">
+                <label for="dateOfBirth">जन्म तिथि:</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">लिंग:</label>
+                <select id="gender" name="gender" required>
+                    <option value="" disabled selected>चुनें</option>
+                    <option value="male">पुरुष</option>
+                    <option value="female">महिला</option>
+                    <option value="other">अन्य</option>
+                </select>
+            </div>
+
+            <!-- Education -->
+            <h3>शैक्षिक पृष्ठभूमि</h3>
+            <div class="form-group">
+                <label for="currentEducation">वर्तमान शिक्षा स्तर:</label>
+                <select id="currentEducation" name="currentEducation" required>
+                    <option value="" disabled selected>चुनें</option>
+                    <option value="secondary">माध्यमिक विद्यालय</option>
+                    <option value="highSchool">उच्च विद्यालय</option>
+                    <option value="college">कॉलेज/विश्वविद्यालय</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="educationalGoals">भविष्य के शैक्षिक लक्ष्य:</label>
+                <textarea id="educationalGoals" name="educationalGoals" rows="3" placeholder="शैक्षिक आकांक्षाओं का वर्णन करें..."></textarea>
+            </div>
+
+            <!-- Skill Development -->
+            <h3>कौशल विकास</h3>
+            <div class="form-group">
+                <label for="skillsInterest">प्रशिक्षण के लिए रुचि के क्षेत्र:</label>
+                <select id="skillsInterest" name="skillsInterest">
+                    <option value="" disabled selected>चुनें</option>
+                    <option value="vocationalTraining">व्यावसायिक प्रशिक्षण</option>
+                    <option value="softSkills">सॉफ़्ट स्किल्स (संचार, टीमवर्क)</option>
+                    <option value="professionalGrooming">व्यावसायिक शृंगार</option>
+                    <option value="careerGuidance">कैरियर मार्गदर्शन</option>
+                    <option value="other">अन्य</option>
+                </select>
+                <label for="otherNeed">कृपया निर्दिष्ट करें (यदि अन्य):</label>
+                <textarea id="otherNeed" name="otherNeed" rows="2" placeholder="अन्य कौशल प्रशिक्षण..."></textarea>
+            </div>
+
+            <!-- Behavioral Support -->
+            <h3>व्यावहारिक और भावनात्मक समर्थन</h3>
+            <div class="form-group">
+                <label for="behavioralChallenges">व्यावहारिक चुनौतियाँ (यदि कोई हो):</label>
+                <textarea id="behavioralChallenges" name="behavioralChallenges" rows="3" placeholder="सामना की गई चुनौतियों का वर्णन करें..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="emotionalSupport">भावनात्मक समर्थन की आवश्यकता:</label>
+                <textarea id="emotionalSupport" name="emotionalSupport" rows="3" placeholder="समर्थन की आवश्यकता का वर्णन करें..."></textarea>
+            </div>
+
+            <h3>अभिभावक विवरण</h3>
+            <div class="form-group">
+                <label for="guardianName">अभिभावक का पूरा नाम:</label>
+                <input type="text" id="guardianName" name="guardianName" placeholder="अभिभावक का नाम दर्ज करें" required>
+            </div>
+            <div class="form-group">
+                <label for="guardianContact">अभिभावक का संपर्क नंबर:</label>
+                <input type="tel" id="guardianContact" name="guardianContact" pattern="[0-9]{10}" placeholder="अभिभावक का संपर्क नंबर दर्ज करें" required>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-group">
+                <button type="submit">नामांकन जमा करें</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

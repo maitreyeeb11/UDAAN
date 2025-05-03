@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Udaan Mission</title>
+    <link rel="stylesheet" href="donor.css">
+</head>
+<body>
+    <div class="background-container">
+        <img src="udaan1.jpg" alt="Udaan Image" class="background-image">
+    </div>
+    <div class="form-container">
+        <h1>Donor Registration</h1>
+        <p>
+            This form is mandatory to be filled out as it is required for filing Form 10B, a crucial audit report for organizations under Section 12A of the Income Tax Act, 1961. 
+            <br>Donations cannot be accepted anonymously to ensure compliance with tax regulations.<br>
+            <a href="https://www.incometax.gov.in/iec/foportal/help/all-topics/statutory-forms/popular-form/form-10B-faq">10B Form Guidelines</a>
+        </p>
+
+        <form id="donor-form" onsubmit="submitForm(event)">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" placeholder="LastName FirstName MiddleName" required>
+
+            <label for="pan">Permanent Account Number:</label>
+            <input type="text" id="pan" name="pan" pattern="[A-Z0-9]{10}" placeholder="Enter PAN" required>
+
+            <label for="sponsor_contact">Contact Number:</label>
+            <input type="text" id="sponsor_contact" name="sponsor_contact" pattern="\d{10}" placeholder="Enter Contact Number" required>
+
+            <label for="sponsor_email">Email:</label>
+            <input type="email" id="sponsor_email" name="sponsor_email" placeholder="Enter Email" required>
+
+            <label for="flat-street">Flat and Street:</label>
+            <input type="text" id="flat-street" name="flat_street" placeholder="Flat No., Street Name">
+
+            <label for="area">Area:</label>
+            <input type="text" id="area" name="area" placeholder="Area">
+
+            <label for="pincode">Pincode:</label>
+            <input type="text" id="pincode" name="pincode" placeholder="Pincode" maxlength="6" onblur="fetchLocationDetails()">
+
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" placeholder="City" readonly>
+
+            <label for="state">State:</label>
+            <input type="text" id="state" name="state" placeholder="State" readonly>
+
+            <label for="amt">Donation Amount (₹):</label>
+            <input type="number" id="amt" name="amt" placeholder="Enter Donation Amount" required>
+
+            <button type="submit" id="pay-btn" class="cta-btn">Donate Now</button>
+        </form>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        async function fetchLocationDetails() {
+            const pincode = document.getElementById("pincode").value.trim();
+            
+            if (pincode.length !== 6 || isNaN(pincode)) {
+                alert("Please enter a valid 6-digit pincode.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+                const data = await response.json();
+
+                if (data[0].Status === "Success") {
+                    document.getElementById("city").value = data[0].PostOffice[0].District;
+                    document.getElementById("state").value = data[0].PostOffice[0].State;
+                } else {
+                    alert("Invalid pincode. Please check and enter again.");
+                }
+            } catch (error) {
+                console.error("Error fetching location details:", error);
+                alert("Could not fetch location details. Please enter manually.");
+            }
+        }
+
+        function openRazorpay(amount, fullName, sponsor_email, sponsor_contact) {
+            const options = {
+                "key": "rzp_test_FOXgK7mifqtjiU",
+                "amount": amount,
+                "currency": "INR",
+                "name": "UDAAN",
+                "description": "Support Us",
+                "image": "img/favicon.ico",
+                "handler": function (response) {
+                    alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+                    sendReceiptToEmail(amount / 100, response.razorpay_payment_id, sponsor_email);
+                },
+                "prefill": { "name": fullName, "email": sponsor_email, "contact": sponsor_contact },
+                "theme": { "color": "#1dbf73" }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        }
+
+        async function sendReceiptToEmail(amount, paymentId, sponsor_email) {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/send-receipt', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount, paymentId, email: sponsor_email })
+
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert("Receipt has been sent to your email.");
+                } else {
+                    alert("Failed to send receipt.");
+                }
+            } catch (error) {
+                console.error("Error sending receipt:", error);
+            }
+        }
+
+        async function submitForm(event) {
+            event.preventDefault();
+            console.log("Form submission started");
+            
+            const submitButton = document.getElementById("pay-btn");
+            submitButton.disabled = true;
+            submitButton.textContent = "Processing...";
+
+            if (!document.getElementById("city").value.trim() || !document.getElementById("state").value.trim()) {
+                alert("Please ensure that city and state are auto-filled based on the pincode.");
+                submitButton.disabled = false;
+                submitButton.textContent = "Donate Now";
+                return;
+            }
+
+            const form = document.getElementById("donor-form");
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value.trim();
+            });
+
+            const donationAmount = parseFloat(data.amt) * 100;
+            if (isNaN(donationAmount) || donationAmount <= 0) {
+                alert("Please enter a valid donation amount.");
+                submitButton.disabled = false;
+                submitButton.textContent = "Donate Now";
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:3000/register-donor", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    openRazorpay(donationAmount, data.fullName, data.sponsor_email, data.sponsor_contact);
+                } else {
+                    alert("Failed to register donor.");
+                    submitButton.disabled = false;
+                    submitButton.textContent = "Donate Now";
+                }
+            } catch (error) {
+                console.error("Error submitting form:", error);
+                submitButton.disabled = false;
+                submitButton.textContent = "Donate Now";
+            }
+        }
+    </script>
+</body>
+</html>

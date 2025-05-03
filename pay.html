@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Form</title>
+    <link rel="stylesheet" href="donor.css">
+</head>
+<body>
+    <div class="background-container">
+       
+    </div>
+    <h2>Donate to UDAAN</h2>
+    <form id="donation-form">
+        <label for="donation-amount">Enter Amount (₹):</label>
+        <input type="number" id="donation-amount" name="amount" placeholder="Enter amount" required />
+        <button type="button" id="pay-btn" class="cta-btn">Donate Now</button>
+    </form>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        document.getElementById('pay-btn').onclick = function () {
+            const amountInput = document.getElementById('donation-amount').value;
+    
+            if (!amountInput || amountInput <= 0) {
+                alert("Please enter a valid donation amount.");
+                return;
+            }
+    
+            const amountInPaise = parseInt(amountInput * 100);
+    
+            var options = {
+                "key": "rzp_test_FOXgK7mifqtjiU", 
+                "amount": amountInPaise,
+                "currency": "INR",
+                "name": "UDAAN",
+                "description": "Support Us",
+                "image": "img/favicon.ico",
+                "handler": function (response) {
+                    alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+                    
+                   
+                    const userEmail = prompt("Enter your email to receive a receipt:");
+    
+                    if (userEmail) {
+                        sendReceiptToEmail(amountInput, response.razorpay_payment_id, userEmail);
+                    }
+                },
+                "prefill": {
+                    "name": "Your Name",
+                    "email": "your.email@example.com",
+                    "contact": "9876543210"
+                },
+                "theme": {
+                    "color": "#1dbf73"
+                }
+            };
+    
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+    
+            return false;
+        };
+    
+        async function sendReceiptToEmail(amount, paymentId, email) {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/send-receipt', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount, paymentId, email })
+                })
+
+    
+                const result = await response.json();
+    
+                if (result.success) {
+                    alert("Receipt has been sent to your email.");
+                } else {
+                    alert("Failed to send receipt. Please contact support.");
+                }
+            } catch (error) {
+                console.error("Error sending receipt:", error);
+                alert("An error occurred while sending the receipt.");
+            }
+        }
+    </script>
+    
+</body>
+</html>

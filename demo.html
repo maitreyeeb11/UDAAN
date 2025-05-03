@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* Background Container */
+        .background-container {
+            position: relative;
+            width: 100%;
+            height: 100vh; /* Full-screen height */
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        /* Main background image */
+        .background-container .background-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5; /* Dim for contrast */
+        }
+
+        /* Hole Effect: Focused image within a circle */
+        .background-container .hole-image {
+            position: absolute;
+            top: 50%; /* Adjust vertical alignment */
+            left: 50%; /* Adjust horizontal alignment */
+            transform: translate(-50%, -50%);
+            width: 300px; /* Diameter of the "hole" */
+            height: 300px;
+            border-radius: 50%; /* Circular hole */
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .background-container .hole-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Adjusts the image within the hole */
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative; /* Ensures form is above the background */
+        }
+
+        h2, h3 {
+            text-align: center;
+            color: #020f09;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #1dbf73;
+            border-radius: 4px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #1dbf73;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #002b17;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background with hole -->
+    <div class="background-container">
+        <img src="background.jpg" alt="Background Image" class="background-image">
+        <div class="hole-image">
+            <img src="child.jpg" alt="Focused Child Image">
+        </div>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="form-container">
+        <h2>Udaan Child Registration Form</h2>
+        <form action="#" method="post">
+            <h3>Personal Information</h3>
+            <div class="form-group">
+                <label for="childName">Child's Full Name:</label>
+                <input type="text" id="childName" name="childName" placeholder="Enter full name" required>
+            </div>
+            <div class="form-group">
+                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit">Submit Registration</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Udaan Mission</title>
+    <link rel="stylesheet" href="mentor.css">
+</head>
+<body>
+    <div class="background-container">
+        <img src="udaan1.jpg" alt="Udaan Image" class="background-image">
+    </div>
+    <div class="form-container">
+        <h1>Be a Guiding Light with Udaan – Become a Mentor!</h1>
+        <p>Empower young minds and help them achieve their dreams by sharing your experience and wisdom.</p>
+        
+        <form action="http://localhost:3000/register-mentor" method="post" id="mentorForm">
+            <label for="mentor_name">Full Name:</label>
+            <input type="text" id="mentor_name" name="mentor_name" required>
+
+            <label for="expertise">Areas of Expertise:</label>
+            <textarea id="expertise" name="expertise" rows="4" required></textarea>
+
+            <label for="mentor_avail">Availability:</label>
+            <textarea id="mentor_avail" name="mentor_avail" rows="2" required></textarea>
+
+            <label for="mentor_email">Email:</label>
+            <input type="email" id="mentor_email" name="mentor_email" required>
+
+            <label for="contact_no">Phone Number:</label>
+            <input type="tel" id="contact_no" name="contact_no" pattern="[0-9]{10}" placeholder="e.g. 9001234567" required>
+
+            <div class="tacbox">
+                <input class="input" id="checkbox" type="checkbox" name="mentor_guidelines" required />
+                <label for="checkbox"> I agree to these <a href="mentorguidelines.html" target="_blank">Mentor Guidelines</a></label>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("mentorForm");
+
+            form.addEventListener("submit", async function (event) {
+                event.preventDefault(); // Prevent default form submission
+
+                const formData = new FormData(this);
+
+                try {
+                    let response = await fetch(form.action, 
+                     {
+                        method: "POST",
+                        body: new URLSearchParams(new FormData(form)), // Ensure form data is correctly formatted
+                        headers: {
+                           "Content-Type": "application/x-www-form-urlencoded",
+                     },
+                   });
+
+                    let result = await response.text(); // Expect HTML response
+                    document.body.innerHTML = result; // Replace entire page with the server response
+
+                } catch (error) {
+                    console.error("Submission failed:", error);
+                    alert("Something went wrong! Please try again.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

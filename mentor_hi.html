@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Udaan Mission</title>
+    <link rel="stylesheet" href="mentor.css">
+</head>
+<body>
+    <div class="background-container">
+        <img src="udaan1.jpg" alt="Udaan Image" class="background-image">
+    </div>
+    <div class="form-container">
+        <h1>उड़ान के साथ मार्गदर्शक बनें – मेंटर बनें!</h1>
+        <p>युवा मनों को सशक्त बनाएं और उनका मार्गदर्शन करें, अपने अनुभव और ज्ञान को साझा करके उनके सपनों को साकार करने में मदद करें।</p>
+        <form action="#" method="post">
+            <label for="fullName">पूरा नाम:</label>
+            <input type="text" id="fullName" name="fullName" required>
+
+            <label for="age">आयु:</label>
+            <input type="number" id="age" name="age" min="18" max="100" required>
+
+            <label for="gender">लिंग:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>चुनें</option>
+                <option value="Male">पुरुष</option>
+                <option value="Female">महिला</option>
+                <option value="Other">अन्य</option>
+                <option value="Choose_not">चुनना नहीं चाहते</option>
+            </select>
+
+            <label for="email">ईमेल:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">फोन नंबर:</label>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+
+            <label for="expertise">विशेषज्ञता के क्षेत्र:</label>
+            <textarea id="expertise" name="expertise" rows="4" placeholder="विशेषज्ञता के क्षेत्र..."></textarea>
+
+            <label for="availability">उपलब्धता (जैसे, सप्ताह के दिन, सप्ताहांत, समय स्लॉट):</label>
+            <textarea id="availability" name="availability" rows="2" required></textarea>
+
+            <label for="mode">प्राथमिक मार्गदर्शन मोड (जैसे, ऑनलाइन, ऑफलाइन, हाइब्रिड):</label>
+            <select id="mode" name="mode" required>
+                <option value="" disabled selected>चुनें</option>
+                <option value="Male">ऑनलाइन</option>
+                <option value="Female">ऑफलाइन</option>
+                <option value="Other">हाइब्रिड</option>
+            </select>
+
+            <label for="goal">आप एक मेंटर के रूप में क्या प्राप्त करना चाहते हैं?</label>
+            <textarea id="goal" name="goal" rows="4" required></textarea>
+
+            <div class="tacbox">
+                <input class="input" id="checkbox" type="checkbox"/>
+                <label for="checkbox">मैं इन <a href="mentorguidelines.html">मेंटर गाइडलाइन्स</a> से सहमत हूँ।</label>
+            </div>
+            <button type="submit">जमा करें</button>
+        </form>
+    </div>
+</body>
+</html>
